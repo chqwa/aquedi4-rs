@@ -22,28 +22,46 @@ pub struct WorldChip {
 
 #[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct WorldEventPage {
+    /// start
     pub start: u32,
+    /// イベントタイプ（ワールド，道，壁）
     pub event_type: u32,
+    /// グラフィック (`WorldEvent.bmp`の番号)
     pub graphic: u32,
 
+    /// ワールド番号．`0`なら番号なし（最初からクリアされた状態）
     pub world_number: u32,
+    /// クリアしなくても通行可能
     pub pass_without_clear: u32,
+    /// クリア後でもプレイ可能
     pub play_after_clear: u32,
+    /// ゲームクリア（しない，2週目へ突入，タイトルに戻る）
     pub on_game_clear: u32,
 
+    /// 出現条件　ワールド `appearance_condition_world`をクリアする．値が`0`の場合は常に出現．
     pub appearance_condition_world: u32, // 1
+    /// 出現条件　変数条件の変数 (e.g. 「変数条件なし」「001」など)
     pub appearance_condition_variable: u32, // dropdown
+    /// 出現条件　変数条件で比較する値
     pub appearance_condition_constant: u32, // spinner
+    /// 出現条件　変数条件の演算子（e.g. 「である」「以上」など）
     pub appearance_condition_comparison_content: u32, // small dropdown
+    /// 出現条件　トータルスコアが`appearance_condition_total_score`以上のとき出現．
     pub appearance_condition_total_score: u32,
 
+    /// バリエーションを設定するかどうか．ワールド開始前にコモン変数を変更する．例えば，コモン変数「難易度」を変えてノーマルとハードを別のワールドとして出したいときなどに利用する．
     pub variation_setting_present: u32,
+    /// 内容を変更する変数
     pub variation_variable: u32,
+    /// 変数に設定する値
     pub variation_constant: u32,
 
+    /// 常に2
     pub strings_count: u32, // 2 - std::vector<std::string>
 
+    /// ワールド名
     pub world_name: StdString, // std::string
+    /// 開始ステージ
     pub start_stage: StdString, // std::string
 }
 
@@ -65,21 +83,29 @@ pub struct WorldMapFile {
     pub version: u32,
     pub settings_count: u32,
 
+    /// ワールドマップの設定・横幅
     pub horizontal_width: u32,
+    /// ワールドマップの設定・縦幅
     pub vertical_width: u32,
 
     pub chunk_width: u32,
     pub chunk_pow: u32,
 
+    /// ワールドマップの設定・初期位置X
     pub initial_position_x: u32,
+    /// ワールドマップの設定・初期位置Y
     pub initial_position_y: u32,
 
+    /// ワールドマップの設定・背景色
     pub background_index: u32,
+    /// ワールドマップの設定・背景画像を利用する
     pub use_background: u32,
 
     pub strings_count: u32, // 2
 
+    /// ワールドマップの設定・背景画像（ファイル名？）
     pub name: StdString,
+    /// ワールドマップの設定・背景画像（ファイルパス？）
     pub bg_path: StdString,
 
     pub tiles_types_count: u32,
