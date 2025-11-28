@@ -1,13 +1,12 @@
 use serde::{Serialize, Deserialize};
 use nom::{
-    bytes::complete::take,
     number::complete::le_u32,
     multi::many_m_n,
     IResult,
     Parser,
 };
 
-use crate::types::StdString;
+use crate::types::{StdString, std_string};
 
 #[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct WorldChip {
@@ -94,20 +93,6 @@ pub struct WorldMapFile {
 
     pub events_pal_count: u32,
     pub event_template_data: Vec<WorldEventBase>,
-}
-
-fn std_string(input: &[u8]) -> IResult<&[u8], StdString> {
-    let (input, length) = le_u32(input)?;
-    let (input, data) = if length > 1 {
-        take(length)(input)?
-    } else {
-        take(0usize)(input)?
-    };
-    let std_string = StdString {
-        length,
-        data: data.to_vec(),
-    };
-    Ok((input, std_string))
 }
 
 fn world_chip(input: &[u8]) -> IResult<&[u8], WorldChip> {
@@ -240,7 +225,7 @@ impl WorldMapFile {
     pub fn from_bytes(data: &[u8]) -> Result<Self, String> {
         let result = world_map_file(data);
         match result {
-            Ok((_, wm)) => Ok(wm),
+            Ok((_, s)) => Ok(s),
             Err(_) => Err("Failed to parse data".to_string()),
         }
     }

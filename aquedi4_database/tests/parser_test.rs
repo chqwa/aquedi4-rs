@@ -1,4 +1,5 @@
 use aquedi4_database::world_map::WorldMapFile;
+use aquedi4_database::bgm::BgmFile;
 
 use std::io::prelude::*;
 use std::fs::File;
@@ -18,6 +19,23 @@ fn world_map_test() -> Result<(), Box<dyn std::error::Error>> {
     assert_eq!(wm.settings_count, 8);
     assert_eq!(wm.horizontal_width, 20);
     assert_eq!(wm.vertical_width, 15);
+
+    Ok(())
+}
+
+#[test]
+fn bgm_test() -> Result<(), Box<dyn std::error::Error>> {
+    let mut data_path = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+    data_path.push("tests/resources/Bgm.dat");
+
+    let mut f = File::open(data_path)?;
+    let mut buf = Vec::new();
+    let _ = f.read_to_end(&mut buf)?;
+
+    let bf = BgmFile::from_bytes(&buf)?;
+    assert_eq!(bf.magic, 1020);
+    assert_eq!(bf.count, 27);
+    assert_eq!(bf.count as usize, bf.elements.len());
 
     Ok(())
 }

@@ -1,6 +1,12 @@
 use std::fmt;
 use serde::{Serialize, Deserialize};
 use encoding_rs::SHIFT_JIS;
+use nom::{
+    bytes::complete::take,
+    number::complete::le_u32,
+    IResult,
+};
+
 
 #[derive(Default, Clone, Serialize, Deserialize)]
 pub struct StdString {
@@ -18,3 +24,16 @@ impl fmt::Debug for StdString {
     }
 }
 
+pub fn std_string(input: &[u8]) -> IResult<&[u8], StdString> {
+    let (input, length) = le_u32(input)?;
+    let (input, data) = if length > 1 {
+        take(length)(input)?
+    } else {
+        take(0usize)(input)?
+    };
+    let std_string = StdString {
+        length,
+        data: data.to_vec(),
+    };
+    Ok((input, std_string))
+}
