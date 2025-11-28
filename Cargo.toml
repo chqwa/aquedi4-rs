@@ -1,5 +1,5 @@
 [workspace]
-
 members = [
     "aquedi4_database",
 ]
+resolver = "3"
