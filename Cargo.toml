@@ -1,0 +1,5 @@
+[workspace]
+
+members = [
+    "aquedi4_database",
+]
